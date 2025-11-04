@@ -664,8 +664,9 @@ class TrainingVisualizer:
 
     def _set_axis_properties(self, ax, small=False):
         """Set consistent axis properties for 3D plots."""
-        ax.set_xlim(-2.0, 2.0)
-        ax.set_ylim(-2.0, 2.0)
+        x_y_width = 4
+        ax.set_xlim(-x_y_width, x_y_width)
+        ax.set_ylim(-x_y_width, x_y_width)
         ax.set_zlim(-0.5, 2.0)
         ax.set_xlabel("X")
         ax.set_ylabel("Y")
