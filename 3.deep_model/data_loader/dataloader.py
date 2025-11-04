@@ -71,7 +71,7 @@ class DataLoader:
             [d.get("gender", 0) for d in data_list], dtype=np.float32
         )
 
-        smpl_map = list(range(15)) + [16, 15, 17, 18, 19, 20, 21]
+        smpl_map = list(range(22))  # Joints 0-21: excludes hand joints (22-23)
         num_smpl = len(smpl_map)
         self.joint_size = num_smpl
 
