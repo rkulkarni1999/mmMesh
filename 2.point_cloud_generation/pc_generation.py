@@ -232,7 +232,6 @@ def frame2pointcloud(frame, pointCloudProcessCFG):
     pointCloud = pointCloud[:, y_vec != 0]
     return pointCloud
 
-
 def apply_coordinate_flips(points):
     if cfg.FLIP_X:
         points[:, 0] = -points[:, 0]  # Flip X coordinate
