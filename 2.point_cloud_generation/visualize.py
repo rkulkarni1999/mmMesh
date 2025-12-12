@@ -4,6 +4,8 @@ from tqdm import tqdm
 import configuration as cfg
 import matplotlib.pyplot as plt
 import cv2
+import matplotlib
+matplotlib.use("Agg")  # MUST be before importing pyplot
 
 
 def create_point_cloud_frame(points, title, elev=20, azim=45):
@@ -89,13 +91,19 @@ def create_point_cloud_frame(points, title, elev=20, azim=45):
 
     plt.tight_layout()
 
-    # Convert matplotlib figure to numpy array
+    # Convert matplotlib figure to numpy array (ARGB -> RGBA -> BGR)
     fig.canvas.draw()
-    buf = np.frombuffer(fig.canvas.tostring_rgb(), dtype=np.uint8)
-    buf = buf.reshape(fig.canvas.get_width_height()[::-1] + (3,))
+    width, height = fig.canvas.get_width_height()
 
-    # Convert RGB to BGR for OpenCV
-    frame = cv2.cvtColor(buf, cv2.COLOR_RGB2BGR)
+    # Get ARGB buffer from canvas
+    buf = np.frombuffer(fig.canvas.tostring_argb(), dtype=np.uint8)
+    buf = buf.reshape((height, width, 4))
+
+    # Convert ARGB -> RGBA (move alpha to the end)
+    buf = buf[:, :, [1, 2, 3, 0]]
+
+    # Convert RGBA -> BGR for OpenCV
+    frame = cv2.cvtColor(buf, cv2.COLOR_RGBA2BGR)
 
     plt.close(fig)
     return frame
@@ -288,16 +296,22 @@ def create_point_cloud_frame_with_bounds(points, title, bounds=None, elev=20, az
 
     plt.tight_layout()
 
-    # Convert matplotlib figure to numpy array
+    # Convert matplotlib figure to numpy array (ARGB -> RGBA -> BGR)
     fig.canvas.draw()
-    buf = np.frombuffer(fig.canvas.tostring_rgb(), dtype=np.uint8)
-    buf = buf.reshape(fig.canvas.get_width_height()[::-1] + (3,))
+    width, height = fig.canvas.get_width_height()
 
-    # Convert RGB to BGR for OpenCV
-    frame = cv2.cvtColor(buf, cv2.COLOR_RGB2BGR)
+    buf = np.frombuffer(fig.canvas.tostring_argb(), dtype=np.uint8)
+    buf = buf.reshape((height, width, 4))
+
+    # ARGB -> RGBA
+    buf = buf[:, :, [1, 2, 3, 0]]
+
+    # RGBA -> BGR
+    frame = cv2.cvtColor(buf, cv2.COLOR_RGBA2BGR)
 
     plt.close(fig)
     return frame
+
 
 
 def create_dataset_visualizations(

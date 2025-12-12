@@ -1,8 +1,8 @@
 import numpy as np
 
 # Configuration for dataset creation
-INPUT_DIR = "data/input"
-OUTPUT_DIR = "data/output"
+# INPUT_DIR = "data/input_json"
+# OUTPUT_DIR = "data/output"
 
 # Options: 'random', 'sequential', 'end'
 SPLIT_METHOD = "end"
@@ -14,7 +14,7 @@ TEST_RATIO = 0.1
 FLIP_Y = True
 FLIP_X = True
 
-CREATE_VISUALIZATIONS = False
+CREATE_VISUALIZATIONS = True
 VIS_FRAME_RATE = 10
 
 # Configuration for mmWave radar parameters
